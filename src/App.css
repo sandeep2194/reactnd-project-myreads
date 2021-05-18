@@ -196,3 +196,18 @@ button:active {
   text-align: center;
   font-size: 0.8em;
 }
+
+/*error*/
+#show{
+  display: flex;
+}
+
+#hide{
+  display: none;
+}
+.error{
+  margin: auto;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}

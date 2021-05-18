@@ -18,13 +18,14 @@ class BooksApp extends React.Component {
       }))
     })
   }
-  updateBook = (book, shelfName, index) => {
+  updateBook = (book, shelfName) => {
     const currentBook = this.state.books.find((b) => b.id === book.id);
 
     if (currentBook) {
       this.setState((oldState) => {
-        oldState.books[index].shelf = shelfName
-        return { books: [...oldState.books] }
+        currentBook.shelf = shelfName
+        let newBooks = oldState.books.filter((b) => b.id != book.id)
+        return { books: [...newBooks, currentBook] }
       })
     } else {
       book.shelf = shelfName
@@ -50,7 +51,7 @@ class BooksApp extends React.Component {
         <Route
           path='/search'
           render={() => (
-            <SearchBooks book={this.state.books} updateBook={this.updateBook} />
+            <SearchBooks books={this.state.books} updateBook={this.updateBook} />
           )}
         />
       </div>

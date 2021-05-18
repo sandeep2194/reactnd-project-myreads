@@ -67,7 +67,9 @@ class SearchBooks extends Component {
                         <ol className="books-grid">
                             {
                                 this.state.books.length > 0 &&
-                                this.state.books.map((book) => (book.imageLinks && <Book book={book} key={book.id} updateBook={this.props.updateBook}
+                                this.state.books.map((book) => (book.imageLinks && <Book
+                                    book={book} key={book.id}
+                                    updateBook={this.props.updateBook}
                                 />))}
                         </ol>
                     </div>

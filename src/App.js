@@ -11,12 +11,11 @@ class BooksApp extends React.Component {
     books: [],
   }
 
-  componentDidMount() {
-    BooksAPI.getAll().then((res) => {
-      this.setState(() => ({
-        books: res,
-      }))
-    })
+  async componentDidMount() {
+    const books = await BooksAPI.getAll();
+    this.setState(() => ({
+      books: books,
+    }))
   }
   updateBook = (book, shelfName) => {
     const currentBook = this.state.books.find((b) => b.id === book.id);
@@ -24,7 +23,7 @@ class BooksApp extends React.Component {
     if (currentBook) {
       this.setState((oldState) => {
         currentBook.shelf = shelfName
-        let newBooks = oldState.books.filter((b) => b.id != book.id)
+        let newBooks = oldState.books.filter((b) => b.id !== book.id)
         return { books: [...newBooks, currentBook] }
       })
     } else {

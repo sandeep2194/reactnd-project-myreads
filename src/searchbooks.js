@@ -23,15 +23,27 @@ class SearchBooks extends Component {
         })
     }
     searchBooks = (query) => {
+        const currentBooks = this.props.books;
         BooksAPI.search(query).then((res) => {
+
             if (res.error) {
                 this.setState(() => ({
                     error: true,
                 }))
             }
             else {
+                let searchedBooks = res.map((b) => {
+                    const machedBook = currentBooks.find((cb) => cb.id === b.id);
+                    if (machedBook) {
+                        b.shelf = machedBook.shelf
+                        return b
+                    } else {
+                        return b
+                    }
+
+                })
                 this.setState(() => ({
-                    books: [...res],
+                    books: [...searchedBooks],
                     error: false,
                 }))
             }
@@ -41,8 +53,8 @@ class SearchBooks extends Component {
         return (
             <div className="search-books">
                 <div className="search-books-bar">
-                    <Link to='/'>
-                        <button className="close-search">Close</button>
+                    <Link to='/' className="close-search">
+                        Close
                     </Link>
                     <div className="search-books-input-wrapper">
                         {/*

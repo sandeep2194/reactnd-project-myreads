@@ -31,7 +31,7 @@ function ListBooks(props) {
                 <Link
                     to='/search'
                 >
-                    <button>Add a book</button>
+                    Add a book
                 </Link>
             </div>
         </div>

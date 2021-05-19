@@ -38,6 +38,7 @@ class SearchBooks extends Component {
                         b.shelf = machedBook.shelf
                         return b
                     } else {
+                        b.shelf = 'none'
                         return b
                     }
 

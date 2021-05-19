@@ -1,10 +1,10 @@
 import React from 'react'
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 import ListBooks from './listbooks';
 import SearchBooks from './searchbooks';
-
+import FourZeroFour from './404';
 
 class BooksApp extends React.Component {
   state = {
@@ -17,42 +17,44 @@ class BooksApp extends React.Component {
       books: books,
     }))
   }
-  updateBook = (book, shelfName) => {
-    const currentBook = this.state.books.find((b) => b.id === book.id);
 
-    if (currentBook) {
-      this.setState((oldState) => {
-        currentBook.shelf = shelfName
-        let newBooks = oldState.books.filter((b) => b.id !== book.id)
-        return { books: [...newBooks, currentBook] }
-      })
-    } else {
-      book.shelf = shelfName
+
+  updateBook = async (book, shelfName) => {
+    try {
+      book.shelf = shelfName;
+      const found = this.state.books.find((b) => b.id === book.id);
+      await BooksAPI.update(book, shelfName);
       this.setState((oldState) => ({
-        books: [...oldState.books, book]
-      }))
+        books: found
+          ? [...oldState.books.filter(({ id }) => id !== book.id), book] // here I used destructure
+          : oldState.books.concat(book), // and here I used concat(), concat() appends to the end of the array.
+      }));
+    } catch (error) {
+      console.log("updateBook Error:", error);
     }
-
-    BooksAPI.update(book, shelfName)
-
   }
+
   render() {
     return (
       <div className="app">
-        <Route
-          exact
-          path='/'
-          render={() => (
-            <ListBooks books={this.state.books} updateBook={this.updateBook} />
-          )}
-        />
+        <Switch>
+          <Route
+            exact
+            path='/'
+            render={() => (
+              <ListBooks books={this.state.books} updateBook={this.updateBook} />
+            )}
+          />
 
-        <Route
-          path='/search'
-          render={() => (
-            <SearchBooks books={this.state.books} updateBook={this.updateBook} />
-          )}
-        />
+          <Route
+            path='/search'
+            render={() => (
+              <SearchBooks books={this.state.books} updateBook={this.updateBook} />
+            )}
+          />
+          <Route component={FourZeroFour} />
+        </Switch>
+
       </div>
     )
   }

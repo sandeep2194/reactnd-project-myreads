@@ -211,3 +211,14 @@ button:active {
   justify-content: center;
   align-items: center;
 }
+.notfound{
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+.notfound strong{
+  font-size: x-large;
+}
